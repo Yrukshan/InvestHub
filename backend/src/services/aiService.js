@@ -1,0 +1,64 @@
+// services/aiService.js
+import OpenAI from "openai";
+import dotenv from "dotenv";
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+dotenv.config({ path: path.resolve(__dirname, '..', '.env') });
+// Provide a safe fallback for non-production environments so tests don't fail
+if (!process.env.OPENROUTER_API_KEY) {
+  if (process.env.NODE_ENV !== 'production') {
+    process.env.OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY || 'dummy-test-api-key';
+    console.warn('⚠️ OPENROUTER_API_KEY missing — using dummy key for non-production environment');
+  } else {
+    console.warn('⚠️ OPENROUTER_API_KEY is missing!');
+  }
+}
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENROUTER_API_KEY,
+  baseURL: "https://openrouter.ai/api/v1",
+  defaultHeaders: {
+    "HTTP-Referer": "http://localhost:5000",
+    "X-Title": "Crowdfunding Platform"
+  }
+});
+
+/**
+ * Generates AI Idea Summary for a startup idea
+ * @param {Object} ideaData 
+ * @returns {string} AI summary
+ */
+export const generateIdeaSummary = async (ideaData) => {
+  try {
+
+    //ADDED dynamic type
+    const typeLabel = ideaData.isIdea ? "Startup Idea" : "Investment Plan";
+
+    const prompt = `
+    Generate a professional ${typeLabel} (max 150 words).
+
+    Title: ${ideaData.title}
+    Description: ${ideaData.description}
+    Category: ${ideaData.category}
+    Budget: ${ideaData.budget}
+    Timeline: ${ideaData.timeline || "Not specified"}
+    Expected Outcomes: ${ideaData.expectedOutcomes || "Not specified"}
+    `;
+
+    const response = await openai.chat.completions.create({
+      model: "openai/gpt-4o-mini",
+      messages: [
+        { role: "system", content: "You are a startup investment analyst." },
+        { role: "user", content: prompt }
+      ]
+    });
+
+    return response.choices[0].message.content.trim();
+  } catch (error) {
+    console.error("AI summary generation failed:", error.response?.data || error.message);
+    return null; // safe fallback
+  }
+};

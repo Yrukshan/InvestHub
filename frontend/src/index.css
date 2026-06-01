@@ -1,0 +1,134 @@
+@import "tailwindcss";
+
+/* Ensure the page background matches the app dark theme to avoid white gaps */
+html, body, #root {
+	background: #020617;
+	min-height: 100%;
+	color: var(--foreground);
+}
+
+body {
+	color-scheme: dark;
+}
+
+/* Theme variables used across components (fallbacks for Tailwind tokens) */
+:root{
+	--background: #020617;
+	--foreground: #E6EEF8;
+	--card: rgba(255,255,255,0.02);
+	--text-muted: rgba(255,255,255,0.6);
+	--accent-from: #1E40AF; /* blue-800 */
+	--accent-to: #1D4ED8;   /* blue-700 */
+	--primary: #3b82f6;
+}
+
+/* Small utility helpers used in pages */
+.bg-background{ background-color: var(--background) !important; }
+.text-foreground{ color: var(--foreground) !important; }
+.text-muted-foreground{ color: var(--text-muted) !important; }
+.heading-tight{ font-weight:700; line-height:1.05; }
+.obsidian-card{ background: var(--card); border: 1px solid rgba(255,255,255,0.04); box-shadow: 0 6px 20px rgba(2,6,23,0.6); color: var(--foreground); }
+.gradient-blue{ background: linear-gradient(90deg, var(--accent-from), var(--accent-to)); }
+.glow-blue{ box-shadow: 0 6px 20px rgba(59,130,246,0.12); }
+
+
+/* Aurora glow behind hero */
+.aurora {
+	position: absolute;
+	inset: -10% -20% auto -20%;
+	height: 60rem;
+	filter: blur(80px) saturate(140%);
+	pointer-events: none;
+	z-index: 0;
+}
+.aurora .a1{background: radial-gradient(closest-side, rgba(59,130,246,0.18), transparent 40%);} 
+.aurora .a2{background: radial-gradient(closest-side, rgba(79,70,229,0.12), transparent 30%); margin-left:30rem; margin-top:-8rem}
+
+/* Gradient animated text flow */
+.gradient-flow{
+	background: linear-gradient(92deg, var(--accent-from), var(--accent-to), #60a5fa);
+	background-size: 200% 200%;
+	-webkit-background-clip: text;
+	background-clip: text;
+	color: transparent;
+	animation: flow 4s linear infinite;
+}
+@keyframes flow{
+	0%{background-position:0% 50%}
+	50%{background-position:100% 50%}
+	100%{background-position:0% 50%}
+}
+
+/* Glass card base */
+.glass-card{
+	background: rgba(255,255,255,0.04);
+	border: 1px solid rgba(255,255,255,0.06);
+	backdrop-filter: blur(14px);
+}
+
+/* Primary CTA glow */
+.btn-primary{
+	background: linear-gradient(90deg, var(--accent-from), var(--accent-to));
+	box-shadow: 0 10px 30px rgba(59,130,246,0.12), 0 2px 8px rgba(79,70,229,0.08);
+}
+.btn-primary:hover{transform:translateY(-2px)}
+
+/* Secondary CTA */
+.btn-ghost{
+	background: transparent;
+	border: 1px solid rgba(255,255,255,0.12);
+}
+
+/* Reusable category filter pills */
+.pill-filter{
+	padding: 0.45rem 0.95rem;
+	border-radius: 9999px;
+	font-size: 0.875rem;
+	font-weight: 500;
+	color: var(--foreground);
+	background: rgba(255,255,255,0.04);
+	border: 1px solid rgba(255,255,255,0.08);
+	transition: all .2s ease;
+}
+.pill-filter:hover{
+	background: rgba(255,255,255,0.08);
+	color: #fff;
+}
+.pill-filter-active{
+	background: rgba(59,130,246,0.18);
+	border-color: rgba(59,130,246,0.35);
+	color: #93c5fd;
+}
+
+/* Sidebar active item style (match image 2) */
+.sidebar-item-active{
+	background: rgba(37,99,235,0.18);
+	color: #60a5fa;
+	border: 1px solid rgba(37,99,235,0.28);
+}
+
+/* Orbiting wireframe */
+.orb{width:420px;height:420px}
+.orb-rotate{animation: orbit 18s linear infinite}
+@keyframes orbit{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+
+/* utility to ensure hero content sits above effects */
+.hero-stage{position:relative;z-index:10}
+
+/* subtle text coloring */
+.muted { color: var(--text-muted); }
+
+/* Marquee animation for social proof logos */
+@keyframes marquee {
+	0% { transform: translateX(0); }
+	100% { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.marquee { animation: none !important; }
+}
+
+.mask-image-gradient {
+  mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+}
