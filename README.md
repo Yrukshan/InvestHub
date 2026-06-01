@@ -8,6 +8,8 @@ This project was developed as a university group project and is maintained under
 
 Group Project Repository (Original Repository) : https://github.com/investhub-platform/investhub
 
+Live Link: www.investhub.me/
+
 **Quick Overview**
 - **Project:** InvestHub
 - **Purpose:** Connect startups with technical mentors and investors
